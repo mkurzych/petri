@@ -16,7 +16,7 @@ Model składa się z **19 miejsc (P1-P19)** oraz **17 przejść (T1-T17)** repre
 
 ![Model Sieci](siec.png)
 
-### Własności Strukturalne określane na podstawie Grafu:
+### Własności Strukturalne określane na podstawie rysunku:
 
 * **Automat stanów:** Sieć **nie jest** automatem stanów, ponieważ istnieją przejścia posiadające więcej niż jeden łuk wejściowy lub wyjściowy (np. *T12* pobiera tokeny z *P11* i *P17*, a *T15* zasila jednocześnie *P13, P15, P17*).
 * **Graf znakowań:** Sieć **nie jest** grafem znakowań, ponieważ miejsca posiadają wiele łuków wejściowych/wyjściowych (np. *P13* jest współdzielone przez *T13* i *T14*, co strukturalnie reprezentuje mechanizm wyboru/konfliktu).
@@ -107,7 +107,7 @@ Reprezentuje całkowity bilans zmian w sieci.
 | **P18 (Energy Storage)** | -1 | -1 | 0 | 0 | 0 | 0 | -1 | -1 | 0 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 |
 | **P19 (Alveoli CO2)** | -1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
 
-### Własności Strukturalne określane na podstawie Macierzy:
+### Własności Strukturalne określane na podstawie macierzy:
 
 * **Brak zachowawczości:** Suma elementów w kolumnie dla *T15* ($1+1+6 = 8$ wyjściowych wobec $1$ wejściowego) wykazuje brak zrównoważenia.
 
@@ -117,7 +117,7 @@ Reprezentuje całkowity bilans zmian w sieci.
 
 Znakowanie początkowe $M_0 = [P19:1, P13:1, P15:3, P11:1, P9:1]$ (pozostałe miejsca posiadają 0 tokenów).
 
-### Graf Osiągalności i Drzewo Pokrycia
+### Graf Osiągalności
 
 Złożoność modelu powoduje generowanie nieograniczoności w gałęzi hiperglikemicznej.
 
@@ -150,11 +150,11 @@ graph TD
     M10 -->|T14| M_11["M_11 = [P9:1, P11:1, P16:1, P15:0, P19:1] <br> ZAKLESZCZENIE (T16 wymaga P15)"]
 ```
 
-### Własności Behawioralne określane na podstawie Grafu:
+### Własności Behawioralne określane na podstawie grafu:
 
-* **Sieć k-ograniczona / bezpieczna:** Sieć **nie jest** ograniczona ani bezpieczna. W gałęzi hiperglikemicznej (*M_12) miejsca *P15* oraz *P17* osiągają wartość nieograniczoną.
+* **Sieć k-ograniczona / bezpieczna:** Sieć **nie jest** ograniczona ani bezpieczna. W gałęzi hiperglikemicznej (*M_12*) miejsca *P15* oraz *P17* osiągają wartość nieograniczoną.
 * **Sieć zachowawcza:** **Nie jest** zachowawcza. Liczba tokenów wzrasta z 7 (w $M_0$) do 13 (w $M_5$), a następnie dąży do nieskończoności.
-* **Sieć żywa / z zakleszczeniem:** Sieć **posiada zakleszczenia**. Stan *M_11* jest stanem pochłaniającym (brak aktywnych przejść), ponieważ *T16* wymaga obecności żetonu w *Muscles (P15)*, a zasób ten został zredukowany do zera.
+* **Sieć żywa / z zakleszczeniem:** Sieć **posiada zakleszczenia**. Stan *M_11* jest stanem w którym nie ma aktywnych przejść, ponieważ *T16* wymaga obecności żetonu w *Muscles (P15)*, a zasób ten został zredukowany do zera.
 * **Sieć odwracalna:** **Nie jest** odwracalna. Wprowadzenie sieci w stan akumulacji wartości nieograniczonych lub w stan zakleszczenia uniemożliwia ponowne otrzymanie znakowania początkowego $M_0$.
 
 ---
