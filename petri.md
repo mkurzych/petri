@@ -1,14 +1,14 @@
 # Analiza Formalna Sieci Petriego: Przepływ Krwi i Cykl Glukozy
 
-Niniejszy dokument zawiera pełną analizę formalną modelu sieci Petriego symulującego sprzężone procesy układu krążenia, wymiany gazowej oraz cyklu glukozowo-insulinowego. Analiza została przeprowadzona na podstawie macierzy strukturalnych, drzewa pokrycia, grafu osiągalności oraz niezmienników miejsc i przejść.
+Ten model sieci Petriego symuluje sprzężone procesy układu krążenia, wymiany gazowej oraz cyklu glukozowo-insulinowego. Analiza została przeprowadzona na podstawie macierzy strukturalnych, drzewa pokrycia, grafu osiągalności oraz niezmienników miejsc i przejść.
 
 ---
 
 ## 1. Ogólny opis i rysunek sieci
 
 ### Opis Podukładów
-Model składa się z **19 miejsc (P1-P19)** oraz **17 przejść (T1-T17)** reprezentujących zintegrowany system biocybernetyczny:
-1. **Układ krążenia (hemodynamiczny):** Przepływ krwi przez jamy serca i naczynia krwionośne (*P3, P4, P5, P6, P7, P8, P9, P10*) sterowany pracą zastawek (*T3, T4, T5, T6, T9, T11*).
+Model składa się z **19 miejsc (P1-P19)** oraz **17 przejść (T1-T17)** reprezentujących zintegrowany system:
+1. **Układ krążenia:** Przepływ krwi przez jamy serca i naczynia krwionośne (*P3, P4, P5, P6, P7, P8, P9, P10*) sterowany pracą zastawek (*T3, T4, T5, T6, T9, T11*).
 2. **Układ oddechowy i wymiana gazowa:** Wentylacja płucna (*T1, T2*) i wymiana pęcherzykowo-tkankowa (*T10, T17*) operujące na poziomach tlenu i dwutlenku węgla (*P1, P2, P11, P12, P19*).
 3. **Cykl glukozy i metabolizm:** Zarządzanie poziomem cukru we krwi (*P13, P14, P16*), magazynowanie energii tkankowej (*P17, P18*) oraz praca mięśni (*P15*) regulowane przez hormony (*T15 - Insulina, T16 - Glukagon*).
 
@@ -27,11 +27,11 @@ Model składa się z **19 miejsc (P1-P19)** oraz **17 przejść (T1-T17)** repre
 
 ## 2. Macierze wejścia, wyjścia i incydencji
 
-Poniższe macierze reprezentują pełne, sformalizowane ujęcie algebraiczne sieci. Kolumny reprezentują przejścia (**T1-T17**), wiersze reprezentują miejsca (**P1-P19**).
+Kolumny reprezentują przejścia (**T1-T17**), wiersze reprezentują miejsca (**P1-P19**).
 
-### Macierz Wyjść (Forwards Incidence Matrix $I^+$)
+### Macierz Wyjść
 
-Definiuje liczność tokenów deponowanych w miejscach po odpaleniu przejść.
+Definiuje liczność tokenów tworzonych w miejscach po odpaleniu przejść.
 
 | Miejsce / Przejście | T1 | T2 | T3 | T4 | T5 | T6 | T7 | T8 | T9 | T10 | T11 | T12 | T13 | T14 | T15 | T16 | T17 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -55,7 +55,7 @@ Definiuje liczność tokenów deponowanych w miejscach po odpaleniu przejść.
 | **P18 (Energy Storage)** | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 |
 | **P19 (Alveoli CO2)** | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
 
-### Macierz Wejść (Backwards Incidence Matrix $I^-$)
+### Macierz Wejść
 
 Definiuje liczność tokenów pobieranych z miejsc w celu odpalenia przejść.
 
@@ -81,7 +81,7 @@ Definiuje liczność tokenów pobieranych z miejsc w celu odpalenia przejść.
 | **P18 (Energy Storage)** | 1 | 1 | 0 | 0 | 0 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | **P19 (Alveoli CO2)** | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 
-### Połączona Macierz Incydencji ($I = I^+ - I^-$)
+### Macierz Incydencji
 
 Reprezentuje całkowity bilans zmian w sieci.
 
@@ -109,8 +109,7 @@ Reprezentuje całkowity bilans zmian w sieci.
 
 ### Własności Strukturalne określane na podstawie Macierzy:
 
-* **Brak zwyczajności sieci:** W macierzy $I^+$ element $I^+(P17, T15) = 6$ jednoznacznie dowodzi strukturalnego mnożenia tokenów.
-* **Brak strukturalnej zachowawczości:** Suma elementów w kolumnie dla *T15* ($1+1+6 = 8$ wyjściowych wobec $1$ wejściowego) wykazuje brak globalnego zrównoważenia strukturalnego.
+* **Brak zachowawczości:** Suma elementów w kolumnie dla *T15* ($1+1+6 = 8$ wyjściowych wobec $1$ wejściowego) wykazuje brak zrównoważenia.
 
 ---
 
@@ -118,9 +117,9 @@ Reprezentuje całkowity bilans zmian w sieci.
 
 Znakowanie początkowe $M_0 = [P19:1, P13:1, P15:3, P11:1, P9:1]$ (pozostałe miejsca posiadają 0 tokenów).
 
-### Graf Osiągalności i Drzewo Pokrycia (Mermaid)
+### Graf Osiągalności i Drzewo Pokrycia
 
-Złożoność modelu powoduje generowanie symbolu nieograniczoności $\omega$ w gałęzi hiperglikemicznej.
+Złożoność modelu powoduje generowanie nieograniczoności w gałęzi hiperglikemicznej.
 
 ```mermaid
 graph TD
@@ -135,7 +134,7 @@ graph TD
     M1 -->|T3| M4["M4 = [P6:1, P11:1, P13:1, P15:3, P19:1]"]
     M4 -->|T4| M4a["M4a = [P3:1, P11:1, P13:1, P15:3, P19:1]"]
     
-    %% Rozwój z M2 (Kluczowa pętla akumulacji glukozy)
+    %% Rozwój z M2 (Pętla akumulacji glukozy)
     M2 -->|T15| M5["M5 = [P9:1, P11:1, P13:1, P15:4, P17:6, P19:1]"]
     M5 -->|T13| M12_loop["M_12 = [P9:1, P11:1, P13:1, P15:infinity, P17:infinity, P19:1]"]
     M12_loop -->|T13| M12_loop
@@ -153,30 +152,16 @@ graph TD
 
 ### Własności Behawioralne określane na podstawie Drzewa/Grafu:
 
-* **Sieć k-ograniczona / bezpieczna:** Sieć **nie jest** ograniczona ani bezpieczna. W gałęzi hiperglikemicznej (*M_omega*) miejsca *P15* oraz *P17* osiągają wartość $\omega$ (brak ograniczenia pojemności magazynu).
+* **Sieć k-ograniczona / bezpieczna:** Sieć **nie jest** ograniczona ani bezpieczna. W gałęzi hiperglikemicznej (*M_12) miejsca *P15* oraz *P17* osiągają wartość nieograniczoną.
 * **Sieć zachowawcza:** **Nie jest** zachowawcza. Liczba tokenów wzrasta z 7 (w $M_0$) do 13 (w $M_5$), a następnie dąży do nieskończoności.
-* **Sieć żywa / z zakleszczeniem:** Sieć **posiada zakleszczenia**. Stan *M_Dead* jest stanem pochłaniającym (brak aktywnych przejść), ponieważ *T16* wymaga obecności żetonu w *Muscles (P15)*, a zasób ten został zredukowany do zera.
-* **Sieć odwracalna:** **Nie jest** odwracalna. Wprowadzenie sieci w stan akumulacji $\omega$ lub w stan zakleszczenia uniemożliwia ponowne otrzymanie znakowania początkowego $M_0$.
+* **Sieć żywa / z zakleszczeniem:** Sieć **posiada zakleszczenia**. Stan *M_11* jest stanem pochłaniającym (brak aktywnych przejść), ponieważ *T16* wymaga obecności żetonu w *Muscles (P15)*, a zasób ten został zredukowany do zera.
+* **Sieć odwracalna:** **Nie jest** odwracalna. Wprowadzenie sieci w stan akumulacji wartości nieograniczonych lub w stan zakleszczenia uniemożliwia ponowne otrzymanie znakowania początkowego $M_0$.
 
 ---
 
-## 4. Niezmienniki miejsc i przejść oraz blokady i pułapki
+## 4. Blokady i pułapki
 
-### Konstrukcja i Analiza P-Niezmienników (Miejsc)
-
-Szukamy wektorów $Y$ spełniających $Y^T \cdot I = 0$. Zidentyfikowano dwa kluczowe niezmienniki stałości zasobów:
-
-1. **P-Niezmiennik Gazowy:** Obejmuje zbiór $\{P1, P2, P19\}$. Ważona suma żetonów jest stała: $M(P1) + M(P2) + M(P19) = 1$. Gaz krąży w pętli zamkniętej i nie ulega anihilacji.
-2. **P-Niezmiennik Hemodynamiczny:** Obejmuje pętlę krwi $\{P3, P4, P5, P6, P7, P8, P9, P10, P11, P12\}$. Łączna objętość krwi w układzie sercowo-naczyniowym pozostaje trwała.
-
-### Konstrukcja i Analiza T-Niezmienników (Przejść)
-
-Szukamy wektorów $X$ spełniających $I \cdot X = 0$.
-
-1. **T-Niezmiennik Kardiorespiracyjny:** Wektor jednostkowy dla przejść pętli hemodynamicznej i wentylacyjnej $[T1, T2, T3, T4, T5, T6, T9, T11, T17]^T$. Wykonanie tej sekwencji przywraca wyjściowy układ ciśnień gazów i płynów.
-2. **T-Niezmiennik Metaboliczny:** Z uwagi na wagę łuku równą 6 dla *T15*, aby zrównoważyć jedno odpalenie sekrecji insuliny (*T15*), przejście oddychania komórkowego (*T12*) musi odpalić się dokładnie 6-krotnie ($X(T12) = 6 \cdot X(T15)$).
-
-### Analiza Blokad (Siphons) i Pułapek (Traps)
+### Analiza Blokad i Pułapek
 
 Na podstawie struktury wyznaczono minimalne zbiory miejsc:
 
@@ -187,36 +172,35 @@ Na podstawie struktury wyznaczono minimalne zbiory miejsc:
 
 
 Ponieważ powyższe zbiory są jednocześnie blokadami i pułapkami oraz zawierają tokeny w $M_0$, **nigdy nie ulegną całkowitemu opróżnieniu**.
-* **Blokada Otwarta (Krytyczna):**
+* **Blokada Otwarta:**
 * $\{P3, P4, P5, P6, P7, P8, P10, P11, P12, P18\}$
 
 
-Zbiór ten łączy cały układ krążenia z magazynem energii *P18*. Jest blokadą, ale **nie jest pułapką**. Jeśli tokeny opuszczą to środowisko (np. poprzez skrajną anoksję połączoną z wyczyszczeniem rezerw *P18*), zbiór ten na zawsze pozostanie pusty, blokując bezpowrotnie powiązane procesy życiowe.
+Zbiór ten łączy cały układ krążenia z magazynem energii *P18*. Jest blokadą, ale **nie jest pułapką**. Jeśli tokeny opuszczą to środowisko (np. wyczyszczenie rezerw *P18*), zbiór ten na zawsze pozostanie pusty, blokując bezpowrotnie powiązane procesy życiowe.
 
 ---
 
 ## 5. Podsumowanie
 
-Poniższa tabela stanowi zbiorcze zestawienie wykazanych własności modelowanego systemu biocybernetycznego.
+Poniższa tabela stanowi zbiorcze zestawienie wykazanych własności modelowanego systemu.
 
 ### Klasyfikacja Własności Modelu
 
 | Typ Własności | Nazwa Własności | Status | Dowód / Źródło Formalne |
 | --- | --- | --- | --- |
-| **Strukturalne** | Automat stanów | **NIE** | Przejście T12 posiada $ |
+| **Strukturalne** | Automat stanów | **NIE** | Przejście T12 posiada więcej niż jedno wyjście |
 | **Strukturalne** | Graf znakowań | **NIE** | Miejsce P13 posiada wiele łuków wejściowych i wyjściowych. |
 | **Strukturalne** | Sieć z wolnym wyborem | **NIE** | Współdzielone miejsce P18 narusza asymetrię wejść przejść. |
 | **Strukturalne** | Sieć prosta | **NIE** | Skrzyżowania łuków w regulacji metabolicznej. |
 | **Strukturalne** | Blokada minimalna | **TAK** | Wykazano 6 minimalnych blokad (w tym krytyczną otwartą S4). |
 | **Strukturalne** | Pułapka minimalna | **TAK** | Wykazano 3 minimalne pułapki (gwarantujące niepustość gazów/komórek). |
-| **Behawioralne** | Sieć k-ograniczona | **NIE** | Miejsca P15 i P17 osiągają wartość $\omega$ w drzewie pokrycia. |
+| **Behawioralne** | Sieć k-ograniczona | **NIE** | Miejsca P15 i P17 osiągają wartość nieogranioczoną w drzewie pokrycia. |
 | **Behawioralne** | Sieć bezpieczna | **NIE** | $M_0(P15) = 3$, co narusza warunek 1-ograniczoności. |
-| **Behawioralne** | Sieć zachowawcza | **NIE** | Łączny wektor sumy tokenów fluktuuje dynamicznie ($M_0=7 \rightarrow M_5=13$). |
+| **Behawioralne** | Sieć zachowawcza | **NIE** | Łączny wektor sumy tokenów dynamicznie się zmienia ($M_0=7 \rightarrow M_5=13$). |
 | **Behawioralne** | Sieć żywa | **NIE** | Obecność martwych przejść po wejściu w stan hipoglikemicznego głodu. |
-| **Behawioralne** | Sieć z zakleszczeniem | **TAK** | Stan *M_Dead* w grafie osiągalności (stan pochłaniający). |
-| **Behawioralne** | Sieć odwracalna | **NIE** | Brak ścieżki powrotnej do $M_0$ z liści zakleszczeń oraz stanów $\omega$. |
+| **Behawioralne** | Sieć z zakleszczeniem | **TAK** | Stan *M_12* w grafie osiągalności. |
+| **Behawioralne** | Sieć odwracalna | **NIE** | Brak ścieżki powrotnej do $M_0$ z liści zakleszczeń oraz stanów nieograniczonej ilości tokenów. |
 
 ### Wnioski Końcowe
 
-Model cechuje się wysoką poprawnością w sekcji **kardiorespiracyjnej** (stabilne pętle, obecność P-niezmienników i zachowawczych blokado-pułapek). Podukład **metaboliczny** wprowadza jednak niestabilność strukturalną (brak ograniczenia bufora cukru oraz ryzyko krytycznego zakleszczenia z głodu). W celu stabilizacji systemu biologicznego, sieć wymagałaby rozbudowy o mechanizmy nadzorujące (np. łuki hamujące lub stochastyczne ograniczenia czasowe).
-```
+Model cechuje się wysoką poprawnością w sekcji **kardiorespiracyjnej** (stabilne pętle i zachowawczych blokado-pułapek). Podukład **metaboliczny** wprowadza jednak niestabilność strukturalną (brak ograniczenia bufora cukru oraz ryzyko krytycznego zakleszczenia z głodu).
